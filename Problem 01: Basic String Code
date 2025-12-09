@@ -1,0 +1,10 @@
+#include <stdio.h>
+int main() {
+    // Corrected: Declared a character array of size 50
+    char name[50]; 
+    printf("Put Your Name Here: ");
+    // Note: scanf("%s", ...) stops reading input at the first whitespace.
+    scanf("%s", name); 
+    printf("Your name is: %s\n", name);
+    return 0;
+}
