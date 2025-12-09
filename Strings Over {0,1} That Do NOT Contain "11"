@@ -1,0 +1,29 @@
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    // Corrected: Declared a character array
+    char str[100]; 
+    int i;
+    
+    printf("Enter a binary string: ");
+    scanf("%s", str);
+
+    for (i = 0; str[i] != '\0'; i++) {
+        
+        // Check for non-binary characters first
+        if (str[i] != '0' && str[i] != '1') {
+            printf("Invalid input: Only 0 and 1 allowed\n");
+            return 0;
+        }
+        
+        // Check for the forbidden substring "11"
+        if (str[i] == '1' && str[i + 1] == '1') {
+            printf("Invalid: Contains 11\n");
+            return 0;
+        }
+    }
+
+    printf("Valid: Does NOT contain 11\n");
+    return 0;
+}
