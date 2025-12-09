@@ -1,0 +1,30 @@
+#include <stdio.h>
+#include <string.h>
+
+int main()
+{
+    // Corrected: Declared as a character array with sufficient size
+    char line[500]; 
+    char *commentStart;
+    
+    printf("Enter C code (type 'END' to stop):\n");
+    
+    while (1) {
+        // read one line of input
+        fgets(line, sizeof(line), stdin);
+        
+        // If the user types END, stop the program
+        if (strncmp(line, "END", 3) == 0)
+            break;
+            
+        // Look for "//" in the line
+        commentStart = strstr(line, "//");
+        
+        // If found, print the comment
+        if (commentStart != NULL) {
+            printf("Found comment: %s", commentStart);
+        }
+    }
+    
+    return 0;
+}
