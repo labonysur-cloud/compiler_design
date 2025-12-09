@@ -1,0 +1,38 @@
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h> // For string termination check
+
+int main() {
+    // Corrected: Declared a character array
+    char str[100]; 
+    int i = 0, valid = 1;
+
+    printf("Enter string to check: ");
+    scanf("%s", str); // scanf is used as per the original problem
+
+    // Check if the string is empty
+    if (str[0] == '\0') {
+        valid = 0;
+    } 
+    // Check first character: Must be a letter or underscore
+    else if (!isalpha(str[0]) && str[0] != '_') {
+        valid = 0;
+    } 
+    else {
+        // Check remaining characters
+        for (i = 1; str[i] != '\0'; i++) {
+            // isalnum checks for letters (alpha) and digits (num)
+            if (!isalnum(str[i]) && str[i] != '_') {
+                valid = 0;
+                break;
+            }
+        }
+    }
+
+    if (valid == 1)
+        printf("Valid Identifier\n");
+    else
+        printf("Not a Valid Identifier\n");
+
+    return 0;
+}
