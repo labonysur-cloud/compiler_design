@@ -1,0 +1,50 @@
+#include <stdio.h>
+#include <string.h> // Required for strcspn()
+
+int main()
+{
+    // Corrected: Declared as character arrays with sufficient size
+    char text[1000], blank[1000];
+    int c = 0; // Index for reading 'text'
+    int d = 0; // Index for writing 'blank'
+    int last_was_space = 1; // Treat the beginning as if a space was just encountered (to skip leading spaces)
+
+    printf("Enter some text:\n");
+
+    // Corrected: Using safer fgets() instead of gets()
+    if (fgets(text, sizeof(text), stdin) == NULL) {
+        return 1;
+    }
+    
+    // Remove the newline character if present
+    text[strcspn(text, "\n")] = '\0'; 
+
+    while (text[c] != '\0') {
+        if (text[c] == ' ') {
+            // If the current character is a space, only copy it if the last copied character was NOT a space
+            if (!last_was_space) {
+                blank[d] = ' ';
+                d++;
+                last_was_space = 1; // Mark that the last character copied was a space
+            }
+        } else {
+            // If the current character is NOT a space, copy it
+            blank[d] = text[c];
+            d++;
+            last_was_space = 0; // Mark that the last character copied was NOT a space
+        }
+        c++;
+    }
+
+    // Terminate the new string
+    // A final check to remove a trailing space if one was copied
+    if (d > 0 && blank[d - 1] == ' ') {
+        d--; 
+    }
+    
+    blank[d] = '\0';
+
+    printf("Text after removing extra spaces:\n%s\n", blank);
+
+    return 0;
+}
