@@ -1,0 +1,30 @@
+#include <stdio.h>
+#include <string.h>
+
+int main()
+{
+    // Corrected: Declared as a character array with sufficient size
+    char line[200]; 
+    char *token;
+
+    printf("Enter a sentence: ");
+    fgets(line, sizeof(line), stdin);
+
+    // Remove the newline character '\n' stored by fgets() for cleaner tokenization
+    line[strcspn(line, "\n")] = '\0'; 
+
+    printf("\nTokenized words:\n");
+
+    // Get the first token (word) using space as the delimiter
+    token = strtok(line, " ");
+    
+    // Continue getting tokens until strtok returns NULL
+    while (token != NULL) 
+    {
+        printf("%s\n", token);
+        // Pass NULL to strtok to continue tokenizing the same string
+        token = strtok(NULL, " ");
+    }
+
+    return 0;
+}
