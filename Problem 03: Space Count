@@ -1,0 +1,19 @@
+#include <stdio.h>
+int main() {
+    // Corrected: Declared a character array of size 100
+    char str[100]; 
+    int i, count = 0;
+    
+    printf("Write a sentence: ");
+    // fgets() is used to safely read a line of input, including spaces
+    fgets(str, sizeof(str), stdin); 
+    
+    for (i = 0; str[i] != '\0'; i++) {
+        if (str[i] == ' ') {
+            count++;
+        }
+    }
+    
+    printf("Number of spaces: %d\n", count);
+    return 0;
+}
