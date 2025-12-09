@@ -1,0 +1,35 @@
+#include <stdio.h>
+#include <string.h> // Included for strcspn if fgets were used
+
+int main() {
+    // Corrected: Declared a character array
+    char str[100]; 
+    int stack = 0;
+    int i;
+    
+    printf("Enter a parentheses string: ");
+    scanf("%s", str); // scanf is used as per the original problem
+
+    for (i = 0; str[i] != '\0'; i++) {
+        if (str[i] == '(') {
+            stack++;
+        } else if (str[i] == ')') {
+            if (stack == 0) {
+                // Found ')' without a preceding '('
+                printf("Not Balanced\n");
+                return 0;
+            }
+            stack--;
+        } else {
+            printf("Invalid input! Only parentheses allowed.\n");
+            return 0;
+        }
+    }
+
+    if (stack == 0)
+        printf("Balanced\n");
+    else
+        printf("Not Balanced\n"); // Leftover unmatched '('
+
+    return 0;
+}
