@@ -1,0 +1,72 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    int c, next;
+    int inside_single = 0;
+    int inside_multi = 0;
+    
+    printf("Enter your code below (Press Ctrl+D or Ctrl+Z and Enter to end input):\n");
+
+    while ((c = getchar()) != EOF) {
+        
+        // 1. Handling single-line comment
+        if (inside_single) {
+            if (c == '\n') {
+                inside_single = 0;
+                putchar('\n');
+            } else {
+                putchar('-'); // Replace comment character with dash
+            }
+            continue;
+        }
+
+        // 2. Handling multi-line comment
+        if (inside_multi) {
+            if (c == '*') {
+                next = getchar();
+                if (next == '/') {
+                    inside_multi = 0;
+                    // Print '*/' as dashes to complete the replacement
+                    putchar('-'); 
+                    putchar('-');
+                } else {
+                    putchar('-'); // Print the '*' as a dash
+                    ungetc(next, stdin); // Put back the lookahead character
+                }
+            } else {
+                putchar('-'); // Replace comment character with dash
+            }
+            continue;
+        }
+
+        // 3. Checking for the START of a comment
+        if (c == '/') {
+            next = getchar();
+            if (next == '/') {
+                inside_single = 1;
+                // Print the comment start '//' as dashes
+                putchar('-');
+                putchar('-');
+                continue;
+            } else if (next == '*') {
+                inside_multi = 1;
+                // Print the comment start '/*' as dashes
+                putchar('-');
+                putchar('-');
+                continue;
+            } else {
+                // Not a comment start, print '/' and the character after it
+                putchar(c);
+                if (next != EOF) {
+                    putchar(next);
+                }
+                continue;
+            }
+        }
+        
+        // 4. Print all non-comment characters normally
+        putchar(c);
+    }
+    return 0;
+}
