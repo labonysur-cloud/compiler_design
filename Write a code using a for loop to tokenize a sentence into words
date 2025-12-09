@@ -1,0 +1,30 @@
+#include <stdio.h>
+
+int main()
+{
+    // Corrected: Declared as a character array with sufficient size
+    char line[200]; 
+    int i;
+
+    printf("Enter a sentence: ");
+    fgets(line, sizeof(line), stdin);
+
+    printf("\nTokenized words:\n");
+
+    for (i = 0; line[i] != '\0'; i++)
+    {
+        // If the character is a word character, print it
+        if (line[i] != ' ' && line[i] != '\n')
+        {
+            printf("%c", line[i]);
+        }
+        // If the character is a word boundary, print a newline to separate the words
+        else
+        {
+            printf("\n");
+        }
+    }
+    // Note: This logic may produce empty lines if there are consecutive spaces.
+
+    return 0;
+}
