@@ -1,0 +1,66 @@
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    // Corrected: Declared as a character array
+    char str[100];
+    int state = 0; // Start state
+    int i;
+
+    printf("Enter a string of a's and b's: ");
+    
+    // Corrected: Using safer fgets() instead of gets()
+    if (fgets(str, sizeof(str), stdin) == NULL) {
+        return 1; // Exit if input fails
+    }
+    
+    // Remove the newline character added by fgets()
+    str[strcspn(str, "\n")] = '\0';
+
+    for (i = 0; i < strlen(str); i++) {
+        
+        if (str[i] == 'a') {
+            if (state == 0) {
+                state = 1; // Start of a+ sequence
+            } else if (state == 1) {
+                state = 1; // Continue a+ sequence
+            } else if (state == 2) {
+                state = 3; // Entered a* part after b+
+            } else if (state == 3) {
+                state = 3; // Continue a* part
+            } else if (state == 4) {
+                state = -1; // Invalid transition from b* (final state)
+                break;
+            }
+
+        } else if (str[i] == 'b') {
+
+            if (state == 0) {
+                state = -1; // Cannot start with 'b'
+                break;
+            } else if (state == 1) {
+                state = 2; // Start of b+ sequence
+            } else if (state == 2) {
+                state = 2; // Continue b+ sequence
+            } else if (state == 3) {
+                state = 4; // Entered b* part after a*
+            } else if (state == 4) {
+                state = 4; // Continue b* part
+            }
+
+        } else {
+            printf("Invalid character: %c\n", str[i]);
+            state = -1;
+            break;
+        }
+
+    }
+
+    // Final accepted states are 2 (end of b+), 3 (end of a*), or 4 (end of b*)
+    if (state == 2 || state == 3 || state == 4)
+        printf("String accepted\n");
+    else
+        printf("String not accepted\n");
+
+    return 0;
+}
