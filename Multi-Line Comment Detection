@@ -1,0 +1,64 @@
+#include <stdio.h>
+#include <string.h>
+
+int main()
+{
+    // Corrected: Declared as a character array with sufficient size
+    char line[500];
+    char *commentStart;
+    // Flag: 0 = outside comment, 1 = inside comment
+    int inMultiline = 0; 
+    
+    printf("Enter C code (type 'END' to stop):\n");
+    
+    while (1) {
+        // read one line of input
+        if (fgets(line, sizeof(line), stdin) == NULL) {
+            break; // Handle EOF
+        }
+        
+        // If the user types END, stop the program
+        if (strncmp(line, "END", 3) == 0)
+            break;
+            
+        // 1. Check for the END of a multi-line comment
+        if (inMultiline) {
+            printf("%s", line); // Print the line as part of the comment
+            
+            // Check for the end of the multi-line comment "*/"
+            if (strstr(line, "*/") != NULL) {
+                inMultiline = 0; // Comment has ended
+                printf("End of multi-line comment\n");
+            }
+            continue; // Move to the next line
+        }
+        
+        // 2. Check for the START of a multi-line comment ("/*")
+        commentStart = strstr(line, "/*");
+        
+        if (commentStart != NULL) {
+            printf("Found multi-line comment start:\n%s", commentStart);
+            
+            // Check if "*/" is on the same line (inline comment)
+            if (strstr(commentStart + 2, "*/") == NULL) { // Search after "/*"
+                inMultiline = 1; // Comment continues to next line
+            } else {
+                // Comment started and ended on the same line
+                printf("End of multi-line comment\n");
+            }
+            continue; // Move to the next line
+        }
+        
+        // 3. Check for the START of a single-line comment ("//")
+        commentStart = strstr(line, "//");
+        
+        if (commentStart != NULL) {
+            printf("Found comment: %s", commentStart);
+            continue; // Move to the next line
+        }
+        
+        // If no comment found, the line is simply ignored, and the loop continues.
+    }
+    
+    return 0;
+}
