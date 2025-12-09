@@ -1,0 +1,14 @@
+#include <stdio.h>
+#include <string.h>
+int main() {
+    // Corrected: Declared a character array of size 50
+    char name[50];
+    printf("Put Your Name Here: ");
+    scanf("%s", name); 
+    
+    int length = strlen(name);
+    
+    printf("Your name is: %s\n", name);
+    printf("Length of your name is: %d\n", length);
+    return 0;
+}
